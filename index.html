@@ -4,23 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HAT DROP</title>
+<meta name="description" content="HAT DROP - Gorras edición limitada de calidad premium. Compra y deja tu reseña.">
+<meta property="og:title" content="HAT DROP - Gorras premium">
+<meta property="og:description" content="Ediciones limitadas, calidad premium.">
+<meta property="og:image" content="logo.jpg">
+<meta property="og:type" content="website">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 /* ===== BASE ===== */
 body{
   margin:0;
-  font-family:Arial,sans-serif;
+  font-family:'Poppins', Arial, sans-serif;
   background:#f5f5f5;
   color:#111;
 }
+a{text-decoration:none; color:inherit;}
 header{
   text-align:center;
   padding:20px;
   background:white;
-  font-size:24px;
-  font-weight:bold;
+  font-size:28px;
+  font-weight:700;
   letter-spacing:2px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  box-shadow:0 2px 8px rgba(0,0,0,0.12);
   position:sticky;
   top:0;
   z-index:1000;
@@ -29,25 +38,30 @@ header{
 /* ===== WELCOME ===== */
 .welcome{
   text-align:center;
-  padding:20px;
+  padding:40px 20px 20px;
+  background:linear-gradient(to bottom, #fff 0%, #f5f5f5 100%);
 }
-.welcome h1{margin:10px 0;font-size:28px;}
-.welcome p{color:#555; margin-top:5px; font-size:16px;}
-.welcome-img{
-  margin-top:20px;
-  width:100%;
-  max-width:600px;
-  height:300px;
-  background:#ddd;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.welcome h1{
+  margin:10px 0;
+  font-size:32px;
+  font-weight:700;
+  color:#222;
+}
+.welcome p{
+  color:#555;
+  margin-top:5px;
   font-size:18px;
-  color:#777;
-  border-radius:12px;
-  overflow:hidden;
-  object-fit:cover;
 }
+.welcome img{
+  margin-top:20px;
+  width:30%;
+  height:30%;
+  object-fit:cover;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  transition:transform 0.3s;
+}
+.welcome img:hover{transform:scale(1.05);}
 
 /* ===== CATALOG ===== */
 .catalog{
@@ -60,26 +74,38 @@ header{
   background:white;
   border-radius:12px;
   overflow:hidden;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
   cursor:pointer;
   transition:0.3s;
   position:relative;
 }
 .card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 6px 15px rgba(0,0,0,0.15);
+  transform:translateY(-5px) scale(1.02);
+  box-shadow:0 8px 20px rgba(0,0,0,0.18);
 }
 .card img{
   width:100%;
   height:250px;
   object-fit:cover;
   border-radius:12px 12px 0 0;
+  transition:transform 0.3s;
 }
+.card img:hover{transform:scale(1.05);}
 .card-content{
   padding:15px;
   text-align:center;
 }
-.price{font-weight:bold;margin-top:10px;}
+.card-content h3{
+  font-size:18px;
+  font-weight:600;
+  color:#222;
+}
+.price{
+  font-weight:700;
+  margin-top:10px;
+  color:#007bff;
+  font-size:16px;
+}
 
 /* ===== MODAL ===== */
 .modal{
@@ -96,9 +122,10 @@ header{
   width:90%;
   max-width:400px;
   border-radius:15px;
-  padding:20px;
+  padding:25px 20px;
   text-align:center;
   animation:fadeIn 0.3s ease;
+  box-shadow:0 8px 25px rgba(0,0,0,0.2);
 }
 @keyframes fadeIn{
   from{opacity:0;transform:scale(0.9);}
@@ -111,9 +138,9 @@ header{
   margin:20px 0;
 }
 .qty button{
-  width:35px;
-  height:35px;
-  font-size:18px;
+  width:40px;
+  height:40px;
+  font-size:20px;
   border:none;
   background:#eee;
   cursor:pointer;
@@ -121,7 +148,7 @@ header{
   transition:0.2s;
 }
 .qty button:hover{background:#ddd;}
-.qty span{margin:0 15px;font-size:18px;}
+.qty span{margin:0 15px;font-size:18px; font-weight:600;}
 .buy-btn{
   background:#007bff;
   color:white;
@@ -132,23 +159,32 @@ header{
   font-size:16px;
   cursor:pointer;
   transition:0.2s;
+  font-weight:600;
 }
-.buy-btn:hover{background:#0056cc;}
+.buy-btn:hover{
+  background:#0056cc;
+  transform:scale(1.02);
+}
 
 /* ===== RESEÑAS ===== */
 .reviews{
   background:white;
-  padding:20px;
+  padding:25px;
   margin:20px;
   border-radius:12px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  box-shadow:0 4px 15px rgba(0,0,0,0.12);
 }
-.reviews h2{margin-bottom:10px;}
+.reviews h2{
+  margin-bottom:15px;
+  font-size:22px;
+  font-weight:700;
+  color:#222;
+}
 .review-item{
   display:flex;
   flex-direction:column;
   border-bottom:1px solid #eee;
-  padding:10px 0;
+  padding:12px 0;
 }
 .review-item:last-child{border-bottom:none;}
 .stars{
@@ -156,49 +192,66 @@ header{
   margin-bottom:5px;
 }
 .comment-input{
-  margin-top:10px;
+  margin-top:12px;
   display:flex;
   gap:10px;
 }
 .comment-input input, .comment-input textarea{
   flex:1;
-  padding:8px;
-  border-radius:5px;
+  padding:10px;
+  border-radius:6px;
   border:1px solid #ccc;
+  font-size:14px;
 }
 .comment-input button{
-  padding:8px 12px;
+  padding:10px 14px;
   background:#007bff;
   color:white;
   border:none;
-  border-radius:5px;
+  border-radius:6px;
   cursor:pointer;
+  font-weight:600;
+  transition:0.2s;
 }
-.comment-input button:hover{background:#0056cc;}
+.comment-input button:hover{background:#0056cc; transform:scale(1.02);}
 
 /* ===== POLÍTICAS ===== */
 .policies{
   background:white;
-  padding:20px;
+  padding:25px;
   margin:20px;
   border-radius:12px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  box-shadow:0 4px 15px rgba(0,0,0,0.12);
 }
-.policies h2{margin-bottom:10px;}
-.policies p{margin-bottom:8px;}
+.policies h2{
+  margin-bottom:12px;
+  font-size:22px;
+  font-weight:700;
+  color:#222;
+}
+.policies p{
+  margin-bottom:10px;
+  font-size:15px;
+  color:#555;
+}
 
 /* ===== ESTRELLAS ===== */
 #starContainer span{
   font-size:24px;
   cursor:pointer;
-  margin-right:5px;
+  transition:0.2s;
+}
+#starContainer span:hover{
+  transform:scale(1.2);
+  color:#f5b50a;
 }
 
 /* RESPONSIVE */
 @media(max-width:768px){
   .catalog{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
-  .welcome h1{font-size:24px;}
-  .welcome-img{height:200px;}
+  .welcome h1{font-size:26px;}
+  .welcome p{font-size:16px;}
+  .welcome img{height:200px;}
   .card img{height:200px;}
 }
 </style>
@@ -210,7 +263,7 @@ header{
 <section class="welcome">
   <h1>Gorras que hablan por ti.</h1>
   <p>Ediciones limitadas. Calidad premium.</p>
-  <img src="logo.jpg" alt="Imagen de bienvenida" style="width:30%; height:30%; object-fit:cover; border-radius:12px;">
+  <img src="logo.jpg" alt="Logo HAT DROP">
 </section>
 
 <section class="catalog">
@@ -251,7 +304,6 @@ header{
 </div>
 </section>
 
-<!-- RESEÑAS -->
 <section class="reviews">
   <h2>Reseñas de clientes</h2>
   <div id="reviewsList"></div>
@@ -275,7 +327,6 @@ header{
   <button onclick="addReview()">Enviar</button>
 </section>
 
-<!-- POLÍTICAS -->
 <section class="policies">
   <h2>Políticas de devolución y envío</h2>
   <p>✅ Devolución por defectos o errores en un plazo de 30 días desde la entrega.</p>
@@ -284,7 +335,6 @@ header{
   <p>✅ Pago seguro mediante WhatsApp y métodos acordados con el vendedor.</p>
 </section>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <h2 id="modalName"></h2>
@@ -308,9 +358,9 @@ header{
 let currentProduct="";
 let currentPrice=0;
 let qty=1;
-let selectedStars = 5; // por defecto
+let selectedStars = 5;
 
-// Configuración Firebase
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyCvazoR3vS9GcExngyIMvt1HQddm5aeNlo",
   authDomain: "hatdroprewievs.firebaseapp.com",
@@ -322,7 +372,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// MODAL PRODUCTOS
 function openModal(name,price){
   currentProduct=name;
   currentPrice=price;
@@ -362,7 +411,7 @@ document.getElementById("modal").addEventListener("click",function(e){
   if(e.target==this){ this.style.display="none"; }
 });
 
-// RESEÑAS FUNCIONALES
+// RESEÑAS
 document.querySelectorAll(".star").forEach(star=>{
   star.addEventListener("click", ()=>{
     selectedStars = parseInt(star.dataset.value);
@@ -393,7 +442,6 @@ function addReview(){
   }).catch(err=>console.error("Error al guardar reseña:",err));
 }
 
-// Mostrar reseñas en tiempo real
 db.collection("reviews").orderBy("timestamp","desc")
 .onSnapshot(snapshot=>{
   const list = document.getElementById("reviewsList");
