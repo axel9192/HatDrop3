@@ -160,7 +160,7 @@ header{
   display:flex;
   gap:10px;
 }
-.comment-input input{
+.comment-input input, .comment-input textarea{
   flex:1;
   padding:8px;
   border-radius:5px;
@@ -187,6 +187,13 @@ header{
 .policies h2{margin-bottom:10px;}
 .policies p{margin-bottom:8px;}
 
+/* ===== ESTRELLAS ===== */
+#starContainer span{
+  font-size:24px;
+  cursor:pointer;
+  margin-right:5px;
+}
+
 /* RESPONSIVE */
 @media(max-width:768px){
   .catalog{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
@@ -204,7 +211,6 @@ header{
   <h1>Gorras que hablan por ti.</h1>
   <p>Ediciones limitadas. Calidad premium.</p>
   <img src="logo.jpg" alt="Imagen de bienvenida" style="width:30%; height:30%; object-fit:cover; border-radius:12px;">
-  </div>
 </section>
 
 <section class="catalog">
@@ -218,7 +224,7 @@ header{
 </div>
 
 <!-- PRODUCTO 2 -->
-<div class="card" onclick="openModal('31 Hats “Magic Red”',699)">
+<div class="card" onclick="openModal('31 Hats Magic Red',699)">
   <img src="mago.jpg" alt="31 Hats Magic Red">
   <div class="card-content">
     <h3>31 Hats Magic Red</h3>
@@ -226,9 +232,8 @@ header{
   </div>
 </div>
 
-
 <!-- PRODUCTO 3 -->
-<div class="card" onclick="openModal('Rude Awekingss La Última Cena”',759)">
+<div class="card" onclick="openModal('Rude Awekingss La Última Cena',759)">
   <img src="cena.jpg" alt="Rude Awekingss La Última Cena">
   <div class="card-content">
     <h3>Rude Awekingss La Última Cena</h3>
@@ -237,43 +242,37 @@ header{
 </div>
 
 <!-- PRODUCTO 4 -->
-<div class="card" onclick="openModal('Essentials Gris claro”',1549)">
+<div class="card" onclick="openModal('Essentials Fear of God Gris claro',1549)">
   <img src="es.jpg" alt="Essentials Fear Of God Gris Claro">
   <div class="card-content">
     <h3>Essentials Fear of God Gris claro</h3>
     <p class="price">$1549 MXN</p>
   </div>
 </div>
-
-  
-<div class="card" onclick="openModal('Hoodie Essentials”',1549)">
-  <img src="es.jpg" alt="Hoodie Essentials gris claro (original)">
-  <div class="card-content">
-    <h3>Essentials gris claro</h3>
-    <p class="price">$1549 MXN</p>
-  </div>
-</div>
-
-</section>
-
-<!-- RESEÑAS -->
-<section class="reviews
-
 </section>
 
 <!-- RESEÑAS -->
 <section class="reviews">
   <h2>Reseñas de clientes</h2>
-  <div id="reviewsList">
-    <div class="review-item">
-      <div class="stars">★★★★★</div>
-      <div>Excelente calidad y entrega rápida.</div>
-    </div>
-  </div>
+  <div id="reviewsList"></div>
+
   <div class="comment-input">
-    <input type="text" id="newReview" placeholder="Escribe tu reseña...">
-    <button onclick="addReview()">Enviar</button>
+    <input type="text" id="reviewName" placeholder="Tu nombre (opcional)">
+    <textarea id="newReview" placeholder="Escribe tu reseña..." rows="2"></textarea>
   </div>
+
+  <div style="margin:10px 0;">
+    <span>Calificación: </span>
+    <span id="starContainer">
+      <span class="star" data-value="1">☆</span>
+      <span class="star" data-value="2">☆</span>
+      <span class="star" data-value="3">☆</span>
+      <span class="star" data-value="4">☆</span>
+      <span class="star" data-value="5">☆</span>
+    </span>
+  </div>
+
+  <button onclick="addReview()">Enviar</button>
 </section>
 
 <!-- POLÍTICAS -->
@@ -301,10 +300,27 @@ header{
   </div>
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
 let currentProduct="";
 let currentPrice=0;
 let qty=1;
+let selectedStars = 5; // por defecto
+
+// Configuración Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCvazoR3vS9GcExngyIMvt1HQddm5aeNlo",
+  authDomain: "hatdroprewievs.firebaseapp.com",
+  projectId: "hatdroprewievs",
+  storageBucket: "hatdroprewievs.firebasestorage.app",
+  messagingSenderId: "628962857704",
+  appId: "1:628962857704:web:9ac3f421f4186b6cc12f5d"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 // MODAL PRODUCTOS
 function openModal(name,price){
@@ -347,17 +363,52 @@ document.getElementById("modal").addEventListener("click",function(e){
 });
 
 // RESEÑAS FUNCIONALES
-function addReview(){
-  const input = document.getElementById("newReview");
-  const text = input.value.trim();
-  if(text==="") return;
-  const div = document.createElement("div");
-  div.className="review-item";
-  div.innerHTML=`<div class="stars">★★★★★</div><div>${text}</div>`;
-  document.getElementById("reviewsList").appendChild(div);
-  input.value="";
+document.querySelectorAll(".star").forEach(star=>{
+  star.addEventListener("click", ()=>{
+    selectedStars = parseInt(star.dataset.value);
+    updateStarsDisplay(selectedStars);
+  });
+});
+function updateStarsDisplay(stars){
+  document.querySelectorAll(".star").forEach(s=>{
+    s.textContent = (parseInt(s.dataset.value) <= stars) ? "★" : "☆";
+  });
 }
-</script>
 
+function addReview(){
+  const name = document.getElementById("reviewName").value.trim() || "Anonimo";
+  const comment = document.getElementById("newReview").value.trim();
+  if(comment==="") return alert("Escribe tu reseña primero.");
+
+  db.collection("reviews").add({
+    name: name,
+    stars: selectedStars,
+    comment: comment,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(()=>{
+    document.getElementById("newReview").value="";
+    document.getElementById("reviewName").value="";
+    selectedStars = 5;
+    updateStarsDisplay(selectedStars);
+  }).catch(err=>console.error("Error al guardar reseña:",err));
+}
+
+// Mostrar reseñas en tiempo real
+db.collection("reviews").orderBy("timestamp","desc")
+.onSnapshot(snapshot=>{
+  const list = document.getElementById("reviewsList");
+  list.innerHTML="";
+  snapshot.forEach(doc=>{
+    const data = doc.data();
+    const div = document.createElement("div");
+    div.className="review-item";
+    div.innerHTML = `
+      <div class="stars">${"★".repeat(data.stars)}${"☆".repeat(5-data.stars)}</div>
+      <div><strong>${data.name}</strong>: ${data.comment}</div>
+    `;
+    list.appendChild(div);
+  });
+});
+</script>
 </body>
 </html>
