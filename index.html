@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAT DROP</title>
+
+<style>
+/* ===== BASE ===== */
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#111;
+}
+header{
+  text-align:center;
+  padding:20px;
+  background:white;
+  font-size:24px;
+  font-weight:bold;
+  letter-spacing:2px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+/* ===== WELCOME ===== */
+.welcome{
+  text-align:center;
+  padding:20px;
+}
+.welcome h1{margin:10px 0;font-size:28px;}
+.welcome p{color:#555; margin-top:5px; font-size:16px;}
+.welcome-img{
+  margin-top:20px;
+  width:100%;
+  max-width:600px;
+  height:300px;
+  background:#ddd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  color:#777;
+  border-radius:12px;
+  overflow:hidden;
+  object-fit:cover;
+}
+
+/* ===== CATALOG ===== */
+.catalog{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  padding:20px;
+}
+.card{
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  cursor:pointer;
+  transition:0.3s;
+  position:relative;
+}
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 6px 15px rgba(0,0,0,0.15);
+}
+.card img{
+  width:100%;
+  height:250px;
+  object-fit:cover;
+  border-radius:12px 12px 0 0;
+}
+.card-content{
+  padding:15px;
+  text-align:center;
+}
+.price{font-weight:bold;margin-top:10px;}
+
+/* ===== MODAL ===== */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+}
+.modal-content{
+  background:white;
+  width:90%;
+  max-width:400px;
+  border-radius:15px;
+  padding:20px;
+  text-align:center;
+  animation:fadeIn 0.3s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(0.9);}
+  to{opacity:1;transform:scale(1);}
+}
+.qty{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:20px 0;
+}
+.qty button{
+  width:35px;
+  height:35px;
+  font-size:18px;
+  border:none;
+  background:#eee;
+  cursor:pointer;
+  border-radius:5px;
+  transition:0.2s;
+}
+.qty button:hover{background:#ddd;}
+.qty span{margin:0 15px;font-size:18px;}
+.buy-btn{
+  background:#007bff;
+  color:white;
+  padding:12px;
+  border:none;
+  width:100%;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.buy-btn:hover{background:#0056cc;}
+
+/* ===== RESEÑAS ===== */
+.reviews{
+  background:white;
+  padding:20px;
+  margin:20px;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+.reviews h2{margin-bottom:10px;}
+.review-item{
+  display:flex;
+  flex-direction:column;
+  border-bottom:1px solid #eee;
+  padding:10px 0;
+}
+.review-item:last-child{border-bottom:none;}
+.stars{
+  color:#f5b50a;
+  margin-bottom:5px;
+}
+.comment-input{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+}
+.comment-input input{
+  flex:1;
+  padding:8px;
+  border-radius:5px;
+  border:1px solid #ccc;
+}
+.comment-input button{
+  padding:8px 12px;
+  background:#007bff;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+.comment-input button:hover{background:#0056cc;}
+
+/* ===== POLÍTICAS ===== */
+.policies{
+  background:white;
+  padding:20px;
+  margin:20px;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+.policies h2{margin-bottom:10px;}
+.policies p{margin-bottom:8px;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .catalog{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+  .welcome h1{font-size:24px;}
+  .welcome-img{height:200px;}
+  .card img{height:200px;}
+}
+</style>
+</head>
+<body>
+
+<header>HAT DROP</header>
+
+<section class="welcome">
+  <h1>Gorras que hablan por ti.</h1>
+  <p>Ediciones limitadas. Calidad premium.</p>
+  <div class="welcome-img">Aquí va tu imagen de bienvenida</div>
+</section>
+
+<section class="catalog">
+<!-- PRODUCTO 1 -->
+<div class="card" onclick="openModal('Barbas Hats Chrome x CT',799)">
+  <img src="chrome.jpg" alt="El Barbas Hats Chrome x CT">
+  <div class="card-content">
+    <h3>Barbas Hats Chrome x CT</h3>
+    <p class="price">$799 MXN</p>
+  </div>
+</div>
+
+<!-- PRODUCTO 2 -->
+<div class="card" onclick="openModal('31 Hats “Magic Red”',699)">
+  <img src="mago.jpg" alt="31 Hats Magic Red">
+  <div class="card-content">
+    <h3>31 Hats Magic Red</h3>
+    <p class="price">$699 MXN</p>
+  </div>
+</div>
+
+</section>
+
+<!-- RESEÑAS -->
+<section class="reviews">
+  <h2>Reseñas de clientes</h2>
+  <div id="reviewsList">
+    <div class="review-item">
+      <div class="stars">★★★★★</div>
+      <div>Excelente calidad y entrega rápida.</div>
+    </div>
+  </div>
+  <div class="comment-input">
+    <input type="text" id="newReview" placeholder="Escribe tu reseña...">
+    <button onclick="addReview()">Enviar</button>
+  </div>
+</section>
+
+<!-- POLÍTICAS -->
+<section class="policies">
+  <h2>Políticas de devolución y envío</h2>
+  <p>✅ Devolución por defectos o errores en un plazo de 30 días desde la entrega.</p>
+  <p>✅ Si el producto no llega en un mes, se puede solicitar reembolso.</p>
+  <p>✅ Las gorras son G5 de calidad premium; los originales estarán disponibles próximamente.</p>
+  <p>✅ Pago seguro mediante WhatsApp y métodos acordados con el vendedor.</p>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2 id="modalName"></h2>
+    <p id="modalPrice"></p>
+
+    <div class="qty">
+      <button onclick="changeQty(-1)">-</button>
+      <span id="quantity">1</span>
+      <button onclick="changeQty(1)">+</button>
+    </div>
+
+    <button class="buy-btn" onclick="sendOrder()">Comprar ahora</button>
+  </div>
+</div>
+
+<script>
+let currentProduct="";
+let currentPrice=0;
+let qty=1;
+
+// MODAL PRODUCTOS
+function openModal(name,price){
+  currentProduct=name;
+  currentPrice=price;
+  qty=1;
+  document.getElementById("quantity").innerText=qty;
+  document.getElementById("modalName").innerText=name;
+  document.getElementById("modalPrice").innerText="$"+price+" MXN";
+  document.getElementById("modal").style.display="flex";
+}
+function changeQty(n){
+  qty+=n;
+  if(qty<1) qty=1;
+  document.getElementById("quantity").innerText=qty;
+}
+function sendOrder(){
+  let message = `🧢 Hola, quiero esta gorra:
+
+Modelo: ${currentProduct}
+Precio unitario: $${currentPrice} MXN
+Cantidad: ${qty}
+💰 Total: $${currentPrice*qty} MXN
+
+📦 Envío:
+Gratis arriba de $1500
+Costo estándar: $120
+
+Mi nombre:
+Mi ciudad:
+
+Quedo atento para método de pago 🙌`;
+
+  let phone = "5215531622061"; 
+  let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url,"_blank");
+}
+document.getElementById("modal").addEventListener("click",function(e){
+  if(e.target==this){ this.style.display="none"; }
+});
+
+// RESEÑAS FUNCIONALES
+function addReview(){
+  const input = document.getElementById("newReview");
+  const text = input.value.trim();
+  if(text==="") return;
+  const div = document.createElement("div");
+  div.className="review-item";
+  div.innerHTML=`<div class="stars">★★★★★</div><div>${text}</div>`;
+  document.getElementById("reviewsList").appendChild(div);
+  input.value="";
+}
+</script>
+
+</body>
+</html>
