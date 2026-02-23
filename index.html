@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -138,87 +138,4 @@ header{
   <img src="chrome.jpg" alt="El Barbas Hats Chrome x CT">
   <div class="card-content">
     <h3>Barbas Hats Chrome x CT</h3>
-    <p class="price">$799 MXN</p>
-  </div>
-</div>
-
-<!-- PRODUCTO 2 -->
-<div class="card" onclick="openModal('31 Hats “Magic Red”',699)">
-  <img src="mago.jpg" alt="31 Hats “Magic Red”"> <!-- arreglé extensión de archivo -->
-  <div class="card-content">
-    <h3>31 Hats Magic Red</h3>
-    <p class="price">$699 MXN</p>
-  </div>
-</div>
-
-<!-- Agrega más productos igual -->
-</section>
-
-<!-- MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <h2 id="modalName"></h2>
-    <p id="modalPrice"></p>
-
-    <div class="qty">
-      <button onclick="changeQty(-1)">-</button>
-      <span id="quantity">1</span>
-      <button onclick="changeQty(1)">+</button>
-    </div>
-
-    <button class="buy-btn" onclick="sendOrder()">Comprar ahora</button>
-  </div>
-</div>
-
-<script>
-let currentProduct="";
-let currentPrice=0;
-let qty=1;
-
-function openModal(name,price){
-  currentProduct=name;
-  currentPrice=price;
-  qty=1;
-  document.getElementById("quantity").innerText=qty;
-  document.getElementById("modalName").innerText=name;
-  document.getElementById("modalPrice").innerText="$"+price+" MXN";
-  document.getElementById("modal").style.display="flex";
-}
-
-function changeQty(n){
-  qty+=n;
-  if(qty<1) qty=1;
-  document.getElementById("quantity").innerText=qty;
-}
-
-function sendOrder(){
-  let message = `🧢 Hola, quiero esta gorra:
-
-Modelo: ${currentProduct}
-Precio unitario: $${currentPrice} MXN
-Cantidad: ${qty}
-💰 Total: $${currentPrice*qty} MXN
-
-📦 Envío:
-Gratis arriba de $1500
-Costo estándar: $120
-
-Mi nombre:
-Mi ciudad:
-
-Quedo atento para método de pago 🙌`;
-
-  let phone = "5215531622061"; 
-  let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-  window.open(url,"_blank");
-}
-
-document.getElementById("modal").addEventListener("click",function(e){
-  if(e.target==this){
-    this.style.display="none";
-  }
-});
-</script>
-
-</body>
-</html>
+    
