@@ -3,334 +3,533 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hat Drop</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<title>HAT DROP</title>
 
 <style>
-
+/* ===== BASE ===== */
 body{
-margin:0;
-font-family:'Inter',sans-serif;
-background:#ffffff;
-color:#111;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#111;
 }
-
 header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 30px;
-position:fixed;
-width:100%;
-top:0;
-background:white;
-border-bottom:1px solid #eee;
-z-index:1000;
+  text-align:center;
+  padding:20px;
+  background:white;
+  font-size:24px;
+  font-weight:bold;
+  letter-spacing:2px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
-
-.logo{
-font-weight:700;
-font-size:22px;
-cursor:pointer;
+.welcome{
+  text-align:center;
+  padding:40px 20px;
 }
-
-.icon{
-cursor:pointer;
-font-size:20px;
+.welcome h1{margin:0;font-size:28px;}
+.welcome p{color:#555; margin-top:10px;}
+.catalog{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  padding:20px;
 }
-
-.section{
-padding:120px 40px 60px 40px;
-}
-
-.hero{
-text-align:center;
-padding-top:150px;
-}
-
-.hero h1{
-font-size:42px;
-margin-bottom:10px;
-}
-
-.hero p{
-color:#555;
-margin-bottom:25px;
-}
-
-.btn{
-background:black;
-color:white;
-padding:12px 20px;
-border:none;
-cursor:pointer;
-font-weight:600;
-}
-
-.carousel{
-display:flex;
-overflow-x:auto;
-gap:20px;
-padding-bottom:20px;
-}
-
 .card{
-min-width:220px;
-border:1px solid #eee;
-padding:15px;
-cursor:pointer;
-transition:0.3s;
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  cursor:pointer;
+  transition:0.3s;
+  position:relative;
 }
-
 .card:hover{
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
+  transform:translateY(-5px);
+  box-shadow:0 6px 15px rgba(0,0,0,0.15);
 }
-
-.card img{
-width:100%;
+.image-placeholder{
+  height:250px;
+  background:#ddd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#777;
+  font-size:14px;
+  transition:0.3s;
 }
-
-.price{
-font-weight:600;
+.card-content{
+  padding:15px;
+  text-align:center;
 }
-
-.old{
-text-decoration:line-through;
-color:gray;
-font-size:14px;
+.price{font-weight:bold;margin-top:10px;}
+.old{color:gray;text-decoration:line-through;font-size:14px;}
+/* ===== MODAL ===== */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
 }
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
+.modal-content{
+  background:white;
+  width:90%;
+  max-width:400px;
+  border-radius:15px;
+  padding:20px;
+  text-align:center;
+  animation:fadeIn 0.3s ease;
 }
-
-.hidden{
-display:none;
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(0.9);}
+  to{opacity:1;transform:scale(1);}
 }
-
-input{
-padding:10px;
-width:100%;
-margin-bottom:10px;
-border:1px solid #ddd;
+.qty{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:20px 0;
 }
-
-.cart-item{
-display:flex;
-justify-content:space-between;
-margin-bottom:10px;
+.qty button{
+  width:35px;
+  height:35px;
+  font-size:18px;
+  border:none;
+  background:#eee;
+  cursor:pointer;
+  border-radius:5px;
+  transition:0.2s;
 }
+.qty button:hover{background:#ddd;}
+.qty span{margin:0 15px;font-size:18px;}
+.buy-btn{
+  background:#007bff;
+  color:white;
+  padding:12px;
+  border:none;
+  width:100%;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.buy-btn:hover{background:#0056cc;}
 
+/* RESPONSIVE */
 @media(max-width:768px){
-.hero h1{font-size:28px;}
-.section{padding:100px 20px 40px 20px;}
+  .catalog{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+  .welcome h1{font-size:24px;}
+  .image-placeholder{height:200px;}
 }
-
 </style>
 </head>
 <body>
 
-<header>
-<div class="icon" onclick="openLogin()">👤</div>
-<div class="logo" onclick="showHome()">HAT DROP</div>
-<div class="icon" onclick="showCart()">🛒 (<span id="cartCount">0</span>)</div>
-</header>
+<header>HAT DROP</header>
 
-<!-- HOME -->
-<div id="home">
-
-<div class="hero">
+<section class="welcome">
 <h1>Gorras que hablan por ti.</h1>
-<p>Diseño premium. Ediciones limitadas.</p>
-<button class="btn" onclick="scrollToCatalog()">Ver colección</button>
+<p>Ediciones limitadas. Calidad premium.</p>
+</section>
+
+<section class="catalog">
+<!-- PRODUCTO 1 -->
+<div class="card" onclick="openModal('Chrome x CT',799)">
+  <div class="image-placeholder">Imagen: chrome.jpg</div>
+  <div class="card-content">
+    <h3>Chrome x CT</h3>
+    <p class="price">$799 MXN</p>
+  </div>
 </div>
 
-<div class="section">
-<h2>Destacado</h2>
-<div class="carousel" id="featured"></div>
+<!-- PRODUCTO 2 -->
+<div class="card" onclick="openModal('Black Edition',699)">
+  <div class="image-placeholder">Imagen: black.jpg</div>
+  <div class="card-content">
+    <h3>Black Edition</h3>
+    <p class="price">$699 MXN</p>
+  </div>
 </div>
 
-<div class="section">
-<h2>Lo más nuevo</h2>
-<div class="carousel" id="newest"></div>
+<!-- PRODUCTO 3 -->
+<div class="card" onclick="openModal('White Premium',749)">
+  <div class="image-placeholder">Imagen: white.jpg</div>
+  <div class="card-content">
+    <h3>White Premium</h3>
+    <p class="price">$749 MXN</p>
+  </div>
 </div>
 
-<div class="section" id="catalogSection">
-<h2>Catálogo completo</h2>
-<div class="grid" id="catalog"></div>
+<!-- PRODUCTO 4 -->
+<div class="card" onclick="openModal('Red Limited',799)">
+  <div class="image-placeholder">Imagen: red.jpg</div>
+  <div class="card-content">
+    <h3>Red Limited</h3>
+    <p class="price">$799 MXN</p>
+  </div>
 </div>
 
+<!-- PRODUCTO 5 -->
+<div class="card" onclick="openModal('Beige Essential',780)">
+  <div class="image-placeholder">Imagen: beige.jpg</div>
+  <div class="card-content">
+    <h3>Beige Essential</h3>
+    <p class="price">$780 MXN</p>
+  </div>
 </div>
 
-<!-- PRODUCT VIEW -->
-<div id="productView" class="hidden section"></div>
+<!-- PRODUCTO 6 -->
+<div class="card" onclick="openModal('Navy Elite',830)">
+  <div class="image-placeholder">Imagen: navy.jpg</div>
+  <div class="card-content">
+    <h3>Navy Elite</h3>
+    <p class="price">$830 MXN</p>
+  </div>
+</div>
 
-<!-- CART -->
-<div id="cartView" class="hidden section"></div>
+</section>
 
-<!-- CHECKOUT -->
-<div id="checkoutView" class="hidden section"></div>
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2 id="modalName"></h2>
+    <p id="modalPrice"></p>
 
-<!-- LOGIN -->
-<div id="loginView" class="hidden section"></div>
+    <div class="qty">
+      <button onclick="changeQty(-1)">-</button>
+      <span id="quantity">1</span>
+      <button onclick="changeQty(1)">+</button>
+    </div>
+
+    <button class="buy-btn" onclick="sendOrder()">Comprar ahora</button>
+  </div>
+</div>
 
 <script>
+let currentProduct="";
+let currentPrice=0;
+let qty=1;
 
-const phone="525531622061";
-
-let products=[
-{id:1,name:"Chrome x CT",price:799,old:899,images:["images/chrome1.jpg","images/chrome2.jpg"],desc:"Edición premium Chrome x CT.",featured:true,new:false},
-{id:2,name:"Black Classic",price:799,old:null,images:["images/black1.jpg","images/black2.jpg"],desc:"Diseño negro minimalista.",featured:true,new:true},
-{id:3,name:"White Signature",price:850,old:950,images:["images/white1.jpg","images/white2.jpg"],desc:"Estilo limpio y elegante.",featured:false,new:true},
-{id:4,name:"Red Limited",price:820,old:null,images:["images/red1.jpg","images/red2.jpg"],desc:"Edición limitada roja.",featured:true,new:false},
-{id:5,name:"Beige Essential",price:780,old:null,images:["images/beige1.jpg","images/beige2.jpg"],desc:"Beige minimal premium.",featured:false,new:true},
-{id:6,name:"Navy Elite",price:830,old:920,images:["images/navy1.jpg","images/navy2.jpg"],desc:"Azul marino elegante.",featured:false,new:false}
-];
-
-let cart=JSON.parse(localStorage.getItem("cart"))||[];
-
-function updateCartCount(){
-document.getElementById("cartCount").innerText=cart.length;
+// ABRIR MODAL
+function openModal(name,price){
+  currentProduct=name;
+  currentPrice=price;
+  qty=1;
+  document.getElementById("quantity").innerText=qty;
+  document.getElementById("modalName").innerText=name;
+  document.getElementById("modalPrice").innerText="$"+price+" MXN";
+  document.getElementById("modal").style.display="flex";
 }
 
-function saveCart(){
-localStorage.setItem("cart",JSON.stringify(cart));
-updateCartCount();
+// CAMBIAR CANTIDAD
+function changeQty(n){
+  qty+=n;
+  if(qty<1) qty=1;
+  document.getElementById("quantity").innerText=qty;
 }
 
-function renderProducts(){
-let featured=document.getElementById("featured");
-let newest=document.getElementById("newest");
-let catalog=document.getElementById("catalog");
-
-featured.innerHTML="";
-newest.innerHTML="";
-catalog.innerHTML="";
-
-products.forEach(p=>{
-let card=createCard(p);
-catalog.appendChild(card.cloneNode(true));
-if(p.featured)featured.appendChild(card.cloneNode(true));
-if(p.new)newest.appendChild(card.cloneNode(true));
-});
-}
-
-function createCard(p){
-let div=document.createElement("div");
-div.className="card";
-div.onclick=()=>openProduct(p.id);
-div.innerHTML=`
-<img src="${p.images[0]}">
-<h4>${p.name}</h4>
-${p.old?`<div class="old">$${p.old}</div>`:""}
-<div class="price">$${p.price}</div>
-`;
-return div;
-}
-
-function openProduct(id){
-let p=products.find(x=>x.id===id);
-hideAll();
-let view=document.getElementById("productView");
-view.innerHTML=`
-<h2>${p.name}</h2>
-<img src="${p.images[0]}" style="width:300px;">
-<p>${p.desc}</p>
-<h3>$${p.price}</h3>
-<button class="btn" onclick="addToCart(${p.id})">Agregar al carrito</button>
-`;
-view.classList.remove("hidden");
-}
-
-function addToCart(id){
-let p=products.find(x=>x.id===id);
-cart.push(p);
-saveCart();
-alert("Agregado al carrito");
-}
-
-function showCart(){
-hideAll();
-let view=document.getElementById("cartView");
-let html="<h2>Carrito</h2>";
-let total=0;
-
-cart.forEach((p,i)=>{
-total+=p.price;
-html+=`<div class="cart-item">
-<span>${p.name}</span>
-<span>$${p.price}</span>
-</div>`;
-});
-
-let shipping=total>=1500?0:120;
-let final=total+shipping;
-
-html+=`<hr>
-<p>Subtotal: $${total}</p>
-<p>Envío: $${shipping}</p>
-<h3>Total: $${final}</h3>
-<button class="btn" onclick="showCheckout()">Proceder al pago</button>
-`;
-
-view.innerHTML=html;
-view.classList.remove("hidden");
-}
-
-function showCheckout(){
-hideAll();
-let view=document.getElementById("checkoutView");
-view.innerHTML=`
-<h2>Checkout</h2>
-<input id="name" placeholder="Nombre completo">
-<input id="phoneInput" placeholder="Teléfono">
-<input id="address" placeholder="Dirección">
-<button class="btn" onclick="sendOrder()">Confirmar por WhatsApp</button>
-`;
-view.classList.remove("hidden");
-}
-
+// ENVIAR PEDIDO A WHATSAPP
 function sendOrder(){
-let name=document.getElementById("name").value;
-let total=cart.reduce((s,p)=>s+p.price,0);
-let shipping=total>=1500?0:120;
-let final=total+shipping;
+  let message = `🧢 Hola, quiero esta gorra:
 
-let msg=`🧢 *Nuevo pedido - Hat Drop*%0A%0A👤 Cliente: ${name}%0A%0A📦 Productos:%0A`;
+Modelo: ${currentProduct}
+Precio unitario: $${currentPrice} MXN
+Cantidad: ${qty}
+💰 Total: $${currentPrice*qty} MXN
 
-cart.forEach((p,i)=>{
-msg+=`${i+1}. ${p.name} - $${p.price}%0A`;
+📦 Envío:
+Gratis arriba de $1500
+Costo estándar: $120
+
+Mi nombre:
+Mi ciudad:
+
+Quedo atento para método de pago 🙌`;
+
+  let phone = "5215531622061"; // <-- TU NÚMERO DE WHATSAPP
+  let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url,"_blank");
+}
+
+// CERRAR MODAL AL HACER CLICK FUERA
+document.getElementById("modal").addEventListener("click",function(e){
+  if(e.target==this){
+    this.style.display="none";
+  }
 });
-
-msg+=`%0A💰 Total: $${final} MXN%0A📍 Envío: ${shipping===0?"GRATIS":"$"+shipping}`;
-
-window.open(`https://wa.me/${phone}?text=${msg}`);
-}
-
-function hideAll(){
-document.getElementById("home").classList.add("hidden");
-document.getElementById("productView").classList.add("hidden");
-document.getElementById("cartView").classList.add("hidden");
-document.getElementById("checkoutView").classList.add("hidden");
-document.getElementById("loginView").classList.add("hidden");
-}
-
-function showHome(){
-hideAll();
-document.getElementById("home").classList.remove("hidden");
-}
-
-function scrollToCatalog(){
-document.getElementById("catalogSection").scrollIntoView({behavior:"smooth"});
-}
-
-renderProducts();
-updateCartCount();
-
 </script>
 
 </body>
-</html>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAT DROP</title>
+
+<style>
+/* ===== BASE ===== */
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#111;
+}
+header{
+  text-align:center;
+  padding:20px;
+  background:white;
+  font-size:24px;
+  font-weight:bold;
+  letter-spacing:2px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+.welcome{
+  text-align:center;
+  padding:40px 20px;
+}
+.welcome h1{margin:0;font-size:28px;}
+.welcome p{color:#555; margin-top:10px;}
+.catalog{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  padding:20px;
+}
+.card{
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  cursor:pointer;
+  transition:0.3s;
+  position:relative;
+}
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 6px 15px rgba(0,0,0,0.15);
+}
+.image-placeholder{
+  height:250px;
+  background:#ddd;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#777;
+  font-size:14px;
+  transition:0.3s;
+}
+.card-content{
+  padding:15px;
+  text-align:center;
+}
+.price{font-weight:bold;margin-top:10px;}
+.old{color:gray;text-decoration:line-through;font-size:14px;}
+/* ===== MODAL ===== */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+}
+.modal-content{
+  background:white;
+  width:90%;
+  max-width:400px;
+  border-radius:15px;
+  padding:20px;
+  text-align:center;
+  animation:fadeIn 0.3s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(0.9);}
+  to{opacity:1;transform:scale(1);}
+}
+.qty{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:20px 0;
+}
+.qty button{
+  width:35px;
+  height:35px;
+  font-size:18px;
+  border:none;
+  background:#eee;
+  cursor:pointer;
+  border-radius:5px;
+  transition:0.2s;
+}
+.qty button:hover{background:#ddd;}
+.qty span{margin:0 15px;font-size:18px;}
+.buy-btn{
+  background:#007bff;
+  color:white;
+  padding:12px;
+  border:none;
+  width:100%;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.buy-btn:hover{background:#0056cc;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .catalog{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+  .welcome h1{font-size:24px;}
+  .image-placeholder{height:200px;}
+}
+</style>
+</head>
+<body>
+
+<header>HAT DROP</header>
+
+<section class="welcome">
+<h1>Gorras que hablan por ti.</h1>
+<p>Ediciones limitadas. Calidad premium.</p>
+</section>
+
+<section class="catalog">
+<!-- PRODUCTO 1 -->
+<div class="card" onclick="openModal('Chrome x CT',799)">
+  <div class="image-placeholder">Imagen: chrome.jpg</div>
+  <div class="card-content">
+    <h3>Chrome x CT</h3>
+    <p class="price">$799 MXN</p>
+  </div>
+</div>
+
+<!-- PRODUCTO 2 -->
+<div class="card" onclick="openModal('Black Edition',699)">
+  <div class="image-placeholder">Imagen: black.jpg</div>
+  <div class="card-content">
+    <h3>Black Edition</h3>
+    <p class="price">$699 MXN</p>
+  </div>
+</div>
+
+<!-- PRODUCTO 3 -->
+<div class="card" onclick="openModal('White Premium',749)">
+  <div class="image-placeholder">Imagen: white.jpg</div>
+  <div class="card-content">
+    <h3>White Premium</h3>
+    <p class="price">$749 MXN</p>
+  </div>
+</div>
+
+<!-- PRODUCTO 4 -->
+<div class="card" onclick="openModal('Red Limited',799)">
+  <div class="image-placeholder">Imagen: red.jpg</div>
+  <div class="card-content">
+    <h3>Red Limited</h3>
+    <p class="price">$799 MXN</p>
+  </div>
+</div>
+
+<!-- PRODUCTO 5 -->
+<div class="card" onclick="openModal('Beige Essential',780)">
+  <div class="image-placeholder">Imagen: beige.jpg</div>
+  <div class="card-content">
+    <h3>Beige Essential</h3>
+    <p class="price">$780 MXN</p>
+  </div>
+</div>
+
+<!-- PRODUCTO 6 -->
+<div class="card" onclick="openModal('Navy Elite',830)">
+  <div class="image-placeholder">Imagen: navy.jpg</div>
+  <div class="card-content">
+    <h3>Navy Elite</h3>
+    <p class="price">$830 MXN</p>
+  </div>
+</div>
+
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2 id="modalName"></h2>
+    <p id="modalPrice"></p>
+
+    <div class="qty">
+      <button onclick="changeQty(-1)">-</button>
+      <span id="quantity">1</span>
+      <button onclick="changeQty(1)">+</button>
+    </div>
+
+    <button class="buy-btn" onclick="sendOrder()">Comprar ahora</button>
+  </div>
+</div>
+
+<script>
+let currentProduct="";
+let currentPrice=0;
+let qty=1;
+
+// ABRIR MODAL
+function openModal(name,price){
+  currentProduct=name;
+  currentPrice=price;
+  qty=1;
+  document.getElementById("quantity").innerText=qty;
+  document.getElementById("modalName").innerText=name;
+  document.getElementById("modalPrice").innerText="$"+price+" MXN";
+  document.getElementById("modal").style.display="flex";
+}
+
+// CAMBIAR CANTIDAD
+function changeQty(n){
+  qty+=n;
+  if(qty<1) qty=1;
+  document.getElementById("quantity").innerText=qty;
+}
+
+// ENVIAR PEDIDO A WHATSAPP
+function sendOrder(){
+  let message = `🧢 Hola, quiero esta gorra:
+
+Modelo: ${currentProduct}
+Precio unitario: $${currentPrice} MXN
+Cantidad: ${qty}
+💰 Total: $${currentPrice*qty} MXN
+
+📦 Envío:
+Gratis arriba de $1500
+Costo estándar: $120
+
+Mi nombre:
+Mi ciudad:
+
+Quedo atento para método de pago 🙌`;
+
+  let phone = "5215531622061"; // <-- TU NÚMERO DE WHATSAPP
+  let url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url,"_blank");
+}
+
+// CERRAR MODAL AL HACER CLICK FUERA
+document.getElementById("modal").addEventListener("click",function(e){
+  if(e.target==this){
+    this.style.display="none";
+  }
+});
+</script>
+
+</body>
+</html></html>
