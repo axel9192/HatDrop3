@@ -1,321 +1,411 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HAT DROP</title>
-
-<style>
-body{
-margin:0;
-font-family:Arial, sans-serif;
-background:#0f0f0f;
-color:white;
-overflow-x:hidden;
-}
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px;
-background:#111;
-position:sticky;
-top:0;
-z-index:1000;
-}
-
-.logo{
-font-size:20px;
-font-weight:bold;
-}
-
-.menu-btn{
-font-size:24px;
-cursor:pointer;
-}
-
-.side-menu{
-position:fixed;
-left:-260px;
-top:0;
-width:250px;
-height:100%;
-background:#111;
-padding:20px;
-transition:0.3s;
-z-index:2000;
-}
-
-.side-menu.active{
-left:0;
-}
-
-.side-menu h3{
-margin-top:0;
-}
-
-.side-menu button{
-width:100%;
-padding:10px;
-margin:5px 0;
-background:#222;
-color:white;
-border:none;
-cursor:pointer;
-}
-
-.hero{
+<!DOCTYPE html>  <html lang="es">    <head>    
+<meta charset="UTF-8">    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">    
+<title>HAT DROP</title>    
+<meta name="description" content="HAT DROP - Gorras edición limitada de calidad premium. Compra y deja tu reseña.">    
+<meta property="og:title" content="HAT DROP - Gorras premium">    
+<meta property="og:description" content="Ediciones limitadas, calidad premium.">    
+<meta property="og:image" content="logo.jpg">    
+<meta property="og:type" content="website">  <!-- Google Fonts -->  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">  <style>    
+/* ===== BASE ===== */    
+body{    
+  margin:0;    
+  font-family:'Poppins', Arial, sans-serif;    
+  background:#f5f5f5;    
+  color:#111;    
+}    
+a{text-decoration:none; color:inherit;}    
+header{    
+  text-align:center;    
+  padding:20px;    
+  background:white;    
+  font-size:28px;    
+  font-weight:700;    
+  letter-spacing:2px;    
+  box-shadow:0 2px 8px rgba(0,0,0,0.12);    
+  position:sticky;    
+  top:0;    
+  z-index:1000;    
+}    /* ===== WELCOME ===== */
+.welcome{
 text-align:center;
-padding:40px 20px;
+padding:40px 20px 20px;
+background:linear-gradient(to bottom, #fff 0%, #f5f5f5 100%);
 }
-
-.live-bar{
-background:#1a1a1a;
-padding:8px;
-font-size:14px;
-text-align:center;
-color:#0f0;
+.welcome h1{
+margin:10px 0;
+font-size:32px;
+font-weight:700;
+color:#222;
 }
+.welcome p{
+color:#555;
+margin-top:5px;
+font-size:18px;
+}
+.welcome img{
+margin-top:20px;
+width:30%;
+height:30%;
+object-fit:cover;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+transition:transform 0.3s;
+}
+.welcome img:hover{transform:scale(1.05);}
 
-.products{
+/* ===== CATALOG ===== */
+.catalog{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:15px;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
 padding:20px;
 }
-
 .card{
-background:#1a1a1a;
-padding:10px;
-border-radius:8px;
-text-align:center;
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+cursor:pointer;
+transition:0.3s;
+position:relative;
 }
-
+.card:hover{
+transform:translateY(-5px) scale(1.02);
+box-shadow:0 8px 20px rgba(0,0,0,0.18);
+}
 .card img{
 width:100%;
-border-radius:6px;
+height:250px;
+object-fit:cover;
+border-radius:12px 12px 0 0;
+transition:transform 0.3s;
 }
-
-.card button{
-margin-top:5px;
-padding:8px;
-border:none;
-cursor:pointer;
-}
-
-.cart-panel{
-position:fixed;
-right:-320px;
-top:0;
-width:300px;
-height:100%;
-background:#111;
+.card img:hover{transform:scale(1.05);}
+.card-content{
 padding:15px;
-transition:0.3s;
-z-index:2000;
-overflow-y:auto;
+text-align:center;
 }
-
-.cart-panel.active{
-right:0;
+.card-content h3{
+font-size:18px;
+font-weight:600;
+color:#222;
 }
-
-.cart-item{
-border-bottom:1px solid #333;
-padding:8px 0;
-}
-
-.checkout-btn{
-background:#25D366;
-color:white;
-padding:10px;
-width:100%;
-border:none;
-cursor:pointer;
+.price{
+font-weight:700;
 margin-top:10px;
+color:#007bff;
+font-size:16px;
 }
 
-/* LOGIN */
-#loginScreen{
+/* ===== MODAL ===== */
+.modal{
+display:none;
 position:fixed;
 inset:0;
-background:#000;
+background:rgba(0,0,0,0.6);
+justify-content:center;
+align-items:center;
+z-index:2000;
+}
+.modal-content{
+background:white;
+width:90%;
+max-width:400px;
+border-radius:15px;
+padding:25px 20px;
+text-align:center;
+animation:fadeIn 0.3s ease;
+box-shadow:0 8px 25px rgba(0,0,0,0.2);
+}
+@keyframes fadeIn{
+from{opacity:0;transform:scale(0.9);}
+to{opacity:1;transform:scale(1);}
+}
+.qty{
 display:flex;
 justify-content:center;
 align-items:center;
-z-index:9999;
+margin:20px 0;
 }
-
-.login-box{
-background:#111;
-padding:25px;
-border-radius:8px;
-width:90%;
-max-width:400px;
-}
-
-.login-box input{
-width:100%;
-padding:10px;
-margin:6px 0;
-background:#222;
+.qty button{
+width:40px;
+height:40px;
+font-size:20px;
 border:none;
-color:white;
-}
-
-.login-box button{
-width:100%;
-padding:10px;
-background:#25D366;
-border:none;
-color:white;
-margin-top:10px;
+background:#eee;
 cursor:pointer;
+border-radius:5px;
+transition:0.2s;
 }
-</style>
-</head>
-
-<body>
-
-<!-- LOGIN -->
-<div id="loginScreen">
-<div class="login-box">
-<h2>Bienvenido a HAT DROP</h2>
-<input type="text" id="nombre" placeholder="Nombre completo" required>
-<input type="text" id="usuario" placeholder="Usuario" required>
-<input type="email" id="correo" placeholder="Correo" required>
-<input type="tel" id="telefono" placeholder="Teléfono" required>
-<label><input type="checkbox" id="terminos"> Acepto términos y condiciones</label>
-<button onclick="entrar()">Entrar</button>
-</div>
-</div>
-
-<header>
-<div class="menu-btn" onclick="toggleMenu()">☰</div>
-<div class="logo">HAT DROP</div>
-<div onclick="toggleCart()">🛒</div>
-</header>
-
-<div class="side-menu" id="sideMenu">
-<h3>Menú</h3>
-<button onclick="toggleCart()">Ver carrito</button>
-<button onclick="alert('Wishlist próximamente')">Lista de deseos</button>
-</div>
-
-<div class="hero">
-<h1>Las mejores gorras</h1>
-</div>
-
-<div class="live-bar" id="liveBar">
-🔥 Bienvenido a HAT DROP
-</div>
-
-<div class="products" id="products"></div>
-
-<div class="cart-panel" id="cartPanel">
-<h3>Carrito</h3>
-<div id="cartItems"></div>
-<input type="text" id="cupon" placeholder="Cupón">
-<button onclick="aplicarCupon()">Aplicar cupón</button>
-<h4>Total: $<span id="total">0</span></h4>
-<button class="checkout-btn" onclick="enviarPedido()">Enviar pedido</button>
-</div>
-
-<script>
-let productos = [
-{id:1,nombre:"Chrome Hearts",precio:749,img:"chrome.jpg",stock:5},
-{id:2,nombre:"Maga Hat",precio:699,img:"mago.jpg",stock:4}
-];
-
-let carrito=[];
-let descuento=0;
-
-function entrar(){
-if(
-nombre.value &&
-usuario.value &&
-correo.value &&
-telefono.value &&
-terminos.checked
-){
-loginScreen.style.display="none";
-}else{
-alert("Completa todos los campos");
+.qty button:hover{background:#ddd;}
+.qty span{margin:0 15px;font-size:18px; font-weight:600;}
+.buy-btn{
+background:#007bff;
+color:white;
+padding:12px;
+border:none;
+width:100%;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+transition:0.2s;
+font-weight:600;
 }
+.buy-btn:hover{
+background:#0056cc;
+transform:scale(1.02);
 }
 
-function toggleMenu(){
-sideMenu.classList.toggle("active");
+/* ===== RESEÑAS ===== */
+.reviews{
+background:white;
+padding:25px;
+margin:20px;
+border-radius:12px;
+box-shadow:0 4px 15px rgba(0,0,0,0.12);
+}
+.reviews h2{
+margin-bottom:15px;
+font-size:22px;
+font-weight:700;
+color:#222;
+}
+.review-item{
+display:flex;
+flex-direction:column;
+border-bottom:1px solid #eee;
+padding:12px 0;
+}
+.review-item:last-child{border-bottom:none;}
+.stars{
+color:#f5b50a;
+margin-bottom:5px;
+}
+.comment-input{
+margin-top:12px;
+display:flex;
+gap:10px;
+}
+.comment-input input, .comment-input textarea{
+flex:1;
+padding:10px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
+.comment-input button{
+padding:10px 14px;
+background:#007bff;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+transition:0.2s;
+}
+.comment-input button:hover{background:#0056cc; transform:scale(1.02);}
+
+/* ===== POLÍTICAS ===== */
+.policies{
+background:white;
+padding:25px;
+margin:20px;
+border-radius:12px;
+box-shadow:0 4px 15px rgba(0,0,0,0.12);
+}
+.policies h2{
+margin-bottom:12px;
+font-size:22px;
+font-weight:700;
+color:#222;
+}
+.policies p{
+margin-bottom:10px;
+font-size:15px;
+color:#555;
 }
 
-function toggleCart(){
-cartPanel.classList.toggle("active");
+/* ===== ESTRELLAS ===== */
+#starContainer span{
+font-size:24px;
+cursor:pointer;
+transition:0.2s;
+}
+#starContainer span:hover{
+transform:scale(1.2);
+color:#f5b50a;
 }
 
-function renderProductos(){
-products.innerHTML="";
-productos.forEach(p=>{
-products.innerHTML+=`
-<div class="card">
-<img src="${p.img}">
-<h4>${p.nombre}</h4>
-<p>$${p.precio}</p>
-<p>Stock: ${p.stock}</p>
-<button onclick="agregar(${p.id})">Agregar</button>
-</div>
-`;
-});
+/* RESPONSIVE */
+@media(max-width:768px){
+.catalog{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+.welcome h1{font-size:26px;}
+.welcome p{font-size:16px;}
+.welcome img{height:200px;}
+.card img{height:200px;}
 }
+</style>  </head>
 
-function agregar(id){
-let producto=productos.find(p=>p.id===id);
-if(producto.stock>0){
-carrito.push(producto);
-producto.stock--;
-renderProductos();
-renderCarrito();
-}
-}
+<body>  <header>HAT DROP</header>  <section class="welcome">    
+  <h1>Gorras que hablan por ti.</h1>    
+  <p>Ediciones limitadas. Calidad premium.</p>    
+  <img src="logo.jpg" alt="Logo HAT DROP">    
+</section>  <section class="catalog">    
+<!-- PRODUCTO 1 -->    
+<div class="card" onclick="openModal('Barbas Hats Chrome x CT',799)">    
+  <img src="chrome.jpg" alt="El Barbas Hats Chrome x CT">    
+  <div class="card-content">    
+    <h3>Barbas Hats Chrome x CT</h3>    
+    <p class="price">$799 MXN</p>    
+  </div>    
+</div>  <!-- PRODUCTO 2 -->  <div class="card" onclick="openModal('31 Hats Magic Red',699)">    
+  <img src="mago.jpg" alt="31 Hats Magic Red">    
+  <div class="card-content">    
+    <h3>31 Hats Magic Red</h3>    
+    <p class="price">$699 MXN</p>    
+  </div>    
+</div>  <!-- PRODUCTO 3 -->  <div class="card" onclick="openModal('Rude Awekingss La Última Cena',759)">    
+  <img src="cena.jpg" alt="Rude Awekingss La Última Cena">    
+  <div class="card-content">    
+    <h3>Rude Awekingss La Última Cena</h3>    
+    <p class="price">$759 MXN</p>    
+  </div>    
+</div>  <!-- PRODUCTO 4 -->  <div class="card" onclick="openModal('Essentials Fear of God Gris claro',1549)">    
+  <img src="es.jpg" alt="Essentials Fear Of God Gris Claro">    
+  <div class="card-content">    
+    <h3>Essentials Fear of God Gris claro</h3>    
+    <p class="price">$1549 MXN</p>    
+  </div>    
+</div>    
+</section>  <section class="reviews">    
+  <h2>Reseñas de clientes</h2>    
+  <div id="reviewsList"></div>    <div class="comment-input">    
+    <input type="text" id="reviewName" placeholder="Tu nombre (opcional)">    
+    <textarea id="newReview" placeholder="Escribe tu reseña..." rows="2"></textarea>    
+  </div>    <div style="margin:10px 0;">    
+    <span>Calificación: </span>    
+    <span id="starContainer">    
+      <span class="star" data-value="1">☆</span>    
+      <span class="star" data-value="2">☆</span>    
+      <span class="star" data-value="3">☆</span>    
+      <span class="star" data-value="4">☆</span>    
+      <span class="star" data-value="5">☆</span>    
+    </span>    
+  </div>  <button onclick="addReview()">Enviar</button>  </section>  <section class="policies">    
+  <h2>Políticas de devolución y envío</h2>    
+  <p>✅ Devolución por defectos o errores en un plazo de 30 días desde la entrega.</p>    
+  <p>✅ Si el producto no llega en un plazo de 15 dias, se puede solicitar reembolso.</p>    
+  <p>✅ Las gorras son G5 de calidad premium; los originales estarán disponibles próximamente.</p>    
+  <p>✅ Pago seguro mediante WhatsApp y métodos acordados con el vendedor.</p>    
+</section>  <div class="modal" id="modal">    
+  <div class="modal-content">    
+    <h2 id="modalName"></h2>    
+    <p id="modalPrice"></p>  <div class="qty">    
+  <button onclick="changeQty(-1)">-</button>    
+  <span id="quantity">1</span>    
+  <button onclick="changeQty(1)">+</button>    
+</div>    <button class="buy-btn" onclick="sendOrder()">Comprar ahora</button>
 
-function renderCarrito(){
-cartItems.innerHTML="";
-let total=0;
-carrito.forEach((p,i)=>{
-total+=p.precio;
-cartItems.innerHTML+=`
-<div class="cart-item">
-${p.nombre} - $${p.precio}
-</div>
-`;
-});
-total=total-descuento;
-document.getElementById("total").innerText=total;
-}
+  </div>    
+</div>  <!-- Firebase SDK -->  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>  <script>    
+let currentProduct="";    
+let currentPrice=0;    
+let qty=1;    
+let selectedStars = 5;    // Firebase config
+const firebaseConfig = {
+apiKey: "AIzaSyCvazoR3vS9GcExngyIMvt1HQddm5aeNlo",
+authDomain: "hatdroprewievs.firebaseapp.com",
+projectId: "hatdroprewievs",
+storageBucket: "hatdroprewievs.firebasestorage.app",
+messagingSenderId: "628962857704",
+appId: "1:628962857704:web:9ac3f421f4186b6cc12f5d"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-function aplicarCupon(){
-if(cupon.value==="HAT10"){
-descuento=100;
-renderCarrito();
-alert("Cupón aplicado");
+function openModal(name,price){
+currentProduct=name;
+currentPrice=price;
+qty=1;
+document.getElementById("quantity").innerText=qty;
+document.getElementById("modalName").innerText=name;
+document.getElementById("modalPrice").innerText="$"+price+" MXN";
+document.getElementById("modal").style.display="flex";
 }
+function changeQty(n){
+qty+=n;
+if(qty<1) qty=1;
+document.getElementById("quantity").innerText=qty;
 }
+function sendOrder(){
+let message = `🧢 Hola, quiero esta gorra:
 
-function enviarPedido(){
-let total=document.getElementById("total").innerText;
-let mensaje=`Hola quiero ordenar:\n`;
-carrito.forEach(p=>{
-mensaje+=`- ${p.nombre}\n`;
-});
-mensaje+=`\nTotal: $${total}\n\nCliente:\n${nombre.value}\n${telefono.value}`;
-let url=`https://wa.me/5215531622061?text=${encodeURIComponent(mensaje)}`;
+Modelo: ${currentProduct}
+Precio unitario: $${currentPrice} MXN
+Cantidad: ${qty}
+💰 Total: $${currentPrice*qty} MXN
+
+📦 Envío:
+Gratis arriba de $1500
+Costo estándar: $120
+
+Mi nombre:
+Mi ciudad:
+
+Quedo atento para método de pago 🙌`;
+
+let phone = "5215531622061";
+let url = https://wa.me/${phone}?text=${encodeURIComponent(message)};
 window.open(url,"_blank");
+}
+document.getElementById("modal").addEventListener("click",function(e){
+if(e.target==this){ this.style.display="none"; }
+});
 
-liveBar.innerText=`🔥 ${nombre.value} ordenó ${carrito.length} productos`;
+// RESEÑAS
+document.querySelectorAll(".star").forEach(star=>{
+star.addEventListener("click", ()=>{
+selectedStars = parseInt(star.dataset.value);
+updateStarsDisplay(selectedStars);
+});
+});
+function updateStarsDisplay(stars){
+document.querySelectorAll(".star").forEach(s=>{
+s.textContent = (parseInt(s.dataset.value) <= stars) ? "★" : "☆";
+});
 }
 
-renderProductos();
-</script>
+function addReview(){
+const name = document.getElementById("reviewName").value.trim() || "Anonimo";
+const comment = document.getElementById("newReview").value.trim();
+if(comment==="") return alert("Escribe tu reseña primero.");
 
-</body>
-</html>
+db.collection("reviews").add({
+name: name,
+stars: selectedStars,
+comment: comment,
+timestamp: firebase.firestore.FieldValue.serverTimestamp()
+}).then(()=>{
+document.getElementById("newReview").value="";
+document.getElementById("reviewName").value="";
+selectedStars = 5;
+updateStarsDisplay(selectedStars);
+}).catch(err=>console.error("Error al guardar reseña:",err));
+}
+
+db.collection("reviews").orderBy("timestamp","desc")
+.onSnapshot(snapshot=>{
+const list = document.getElementById("reviewsList");
+list.innerHTML="";
+snapshot.forEach(doc=>{
+const data = doc.data();
+const div = document.createElement("div");
+div.className="review-item";
+div.innerHTML =     <div class="stars">${"★".repeat(data.stars)}${"☆".repeat(5-data.stars)}</div>     <div><strong>${data.name}</strong>: ${data.comment}</div>    ;
+list.appendChild(div);
+});
+});
+</script>  </body>
+
+</html> 
